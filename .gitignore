@@ -1,3 +1,5 @@
 venv
+venv/*
 idea
+idea/*
 .gitignore

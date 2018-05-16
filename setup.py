@@ -19,7 +19,5 @@ setup(
     ],
     keywords='lambda function',
 
-    packages=[
-        "function_chain"
-    ],
+    packages=find_packages(),
 )

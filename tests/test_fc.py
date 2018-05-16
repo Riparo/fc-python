@@ -1,4 +1,4 @@
-from function_chain.fc import Fc
+from fc import Fc
 
 '''
 Use `Pytest` as a test framework

@@ -48,4 +48,4 @@ class Fc:
   # ---------- Magic Methods ----------
 
   def __iter__(self):
-    return self.iter()
+    return iter(self.iter())

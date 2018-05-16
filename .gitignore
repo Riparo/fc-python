@@ -2,3 +2,6 @@ venv
 .idea
 .directory
 .gitignore
+.cache
+*/__pycache__
+*/*/__pycache__

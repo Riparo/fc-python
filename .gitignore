@@ -3,7 +3,9 @@ venv
 .directory
 .gitignore
 .cache
+__pycache__
 */__pycache__
 */*/__pycache__
 fc.egg-info
 dist
+.pytest_cache

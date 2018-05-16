@@ -5,3 +5,5 @@ venv
 .cache
 */__pycache__
 */*/__pycache__
+fc.egg-info
+dist

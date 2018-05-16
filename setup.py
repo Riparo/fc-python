@@ -12,7 +12,6 @@ setup(
     version='0.0.3',
     description='Enables Python to be functionally chain-styled.',
     long_description=long_description,
-    long_description_content_type='text/markdown',
 
     url='https://github.com/Thoxvi/Fuck-Py-Functional',
     author='Thoxvi',
@@ -27,8 +26,4 @@ setup(
     keywords='lambda function',
 
     packages=find_packages(exclude=['function_chain']),
-
-    project_urls={
-        'Source': 'https://github.com/Thoxvi/Fuck-Py-Functional',
-    },
 )

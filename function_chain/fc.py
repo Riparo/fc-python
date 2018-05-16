@@ -7,31 +7,45 @@ class Fc:
   '''
 
   def __init__(self, mylist):
-    self.list = mylist
+    self.__mylist = mylist
 
   def map(self, func):
-    return Fc(list(map(func, self.list)))
+    return Fc(map(func, self.__mylist))
 
   def filter(self, func):
-    return Fc(list(filter(func, self.list)))
+    return Fc(filter(func, self.__mylist))
 
-  def sorted(self, func):
-    return Fc(list(sorted(self.list, key=func)))
+  def sort(self, func=None):
+    if func is None:
+      return Fc(list(sorted(self.__mylist)))
+    else:
+      return Fc(list(sorted(self.__mylist, key=func)))
+
+  def resort(self, func=None):
+    if func is None:
+      return Fc(sorted(self.__mylist, reverse=True))
+    else:
+      return Fc(sorted(self.__mylist, key=func, reverse=True))
+
+  # ---------- The following cannot be chained ----------
 
   def reduce(self, func):
-    return Fc(list(reduce(func, self.list)))
+    return reduce(func, self.__mylist)
 
   def len(self):
-    return len(self.list)
+    return len(list(self.__mylist))
 
   def done(self):
-    return self.list
+    return list(self.__mylist)
 
+  def list(self):
+    '''Just an alias for done.'''
+    return self.done()
 
-if __name__ == "__main__":
-  l = [1, 2, 3, 4, 5, 6, 7]
-  print(Fc(l).map(lambda x: x + 1).done())
-  print(Fc(l).filter(lambda x: x > 3).done())
-  print(Fc(l).filter(lambda x: x > 3).filter(lambda x: x < 6).done())
-  print(Fc(l).filter(lambda x: x > 5).len())
+  def iter(self):
+    return self.__mylist
 
+  # ---------- Magic Methods ----------
+
+  def __iter__(self):
+    return self.iter()

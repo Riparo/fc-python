@@ -8,7 +8,9 @@ Enables Python to be functionally chain-styled.
 
 install form pypi
 
-`$ pip install fc`
+```
+$ pip install fc
+```
 
 and you just import `Fc`,like this: `from fc import Fc`
 

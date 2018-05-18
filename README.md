@@ -51,7 +51,7 @@ mll = Fc(l).len()
 
 l = [1, 2, 3, 4, 5, 6, 7]
 ml = Fc(l).map(lambda x: x + 1).filter(lambda x: x > 6).resort().done()
-# ml == [7, 8]
+# ml == [8, 7]
 ```
 
 You can check this this [test file](./tests/test_fc.py) and understand more

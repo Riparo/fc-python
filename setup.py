@@ -2,10 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name='fc',
-    version='0.0.10',
+    version='0.0.11',
     description='Enables Python to be functionally chain-styled.',
     python_requires='>=3.4',
-    url='https://github.com/Thoxvi/Fuck-Py-Functional',
+    url='https://github.com/Thoxvi/Function-Chain-Python',
     author='Thoxvi',
     author_email='A@Thoxvi.com',
 
@@ -19,5 +19,5 @@ setup(
     ],
     keywords='lambda function',
 
-    packages=find_packages(),
+    packages=["fc"],
 )

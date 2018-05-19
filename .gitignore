@@ -9,3 +9,4 @@ __pycache__
 fc.egg-info
 dist
 .pytest_cache
+.vscode

@@ -10,3 +10,4 @@ fc.egg-info
 dist
 .pytest_cache
 .vscode
+build

@@ -1,6 +1,6 @@
 # Fuck-Py-Functional
 
-[![Build Status](https://travis-ci.org/Thoxvi/Function-Chain-Python.svg?branch=master)](https://travis-ci.org/Thoxvi/Function-Chain-Python)
+[![Build Status](https://travis-ci.org/Thoxvi/Function-Chain-Python.svg?branch=master)](https://travis-ci.org/Thoxvi/Function-Chain-Python) [![PyPI](https://img.shields.io/pypi/v/fc.svg)](https://pypi.python.org/pypi/fc)
 
 Enables Python to be functionally chain-styled.
 

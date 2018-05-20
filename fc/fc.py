@@ -27,6 +27,20 @@ class Fc:
     else:
       return Fc(sorted(self.__mylist, key=func, reverse=True))
 
+  def limit(self, start, count=-1):
+    c1 = 0
+    c2 = 0
+    newlist = []
+    for it in self.__mylist:
+      if c1 >= start:
+        if c2 >= count and count != -1:
+          break
+        else:
+          newlist.append(it)
+          c2 += 1
+      c1 += 1
+    return Fc(newlist)
+
   # ---------- The following cannot be chained ----------
 
   def reduce(self, func):

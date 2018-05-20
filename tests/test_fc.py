@@ -29,6 +29,18 @@ def test_resort():
   assert ml == [7, 6, 5, 4, 3, 2, 1]
 
 
+def test_limit():
+  l = [0, 1, 2, 3, 4, 5, 6, 7]
+  ml = Fc(l).limit(2).done()
+  assert ml == [2, 3, 4, 5, 6, 7]
+  ml = Fc(l).limit(4, 1).done()
+  assert ml == [4]
+  ml = Fc(l).limit(0, 2).done()
+  assert ml == [0, 1]
+  ml = Fc(l).limit(4, 0).done()
+  assert ml == []
+
+
 def test_len():
   l = [1, 2, 3, 4, 5, 6, 7]
   mll = Fc(l).filter(lambda x: x < 1).len()

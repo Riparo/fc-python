@@ -29,16 +29,41 @@ def test_resort():
   assert ml == [7, 6, 5, 4, 3, 2, 1]
 
 
+def test_getAfter():
+  l = [0, 1, 2, 3, 4, 5, 6, 7]
+  ml = Fc(l).getAfter(-20).done()
+  assert ml == [0, 1, 2, 3, 4, 5, 6, 7]
+  l = [0, 1, 2, 3, 4, 5, 6, 7]
+  ml = Fc(l).getAfter(2).done()
+  assert ml == [2, 3, 4, 5, 6, 7]
+  ml = Fc(l).getAfter(4, 1).done()
+  assert ml == [4]
+  ml = Fc(l).getAfter(0, 2).done()
+  assert ml == [0, 1]
+  ml = Fc(l).getAfter(4, 0).done()
+  assert ml == []
+
+
+def test_skip():
+  l = [0, 1, 2, 3, 4, 5, 6, 7]
+  ml = Fc(l).skip(-1).done()
+  assert ml == [0, 1, 2, 3, 4, 5, 6, 7]
+  ml = Fc(l).skip(2).done()
+  assert ml == [2, 3, 4, 5, 6, 7]
+  ml = Fc(l).skip(10).done()
+  assert ml == []
+
+
 def test_limit():
   l = [0, 1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).limit(2).done()
-  assert ml == [2, 3, 4, 5, 6, 7]
-  ml = Fc(l).limit(4, 1).done()
-  assert ml == [4]
-  ml = Fc(l).limit(0, 2).done()
-  assert ml == [0, 1]
-  ml = Fc(l).limit(4, 0).done()
+  ml = Fc(l).limit(-1).done()
   assert ml == []
+  ml = Fc(l).limit(0).done()
+  assert ml == []
+  ml = Fc(l).limit(3).done()
+  assert ml == [0, 1, 2]
+  ml = Fc(l).limit(10).done()
+  assert ml == l
 
 
 def test_len():

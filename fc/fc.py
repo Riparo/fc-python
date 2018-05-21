@@ -351,17 +351,14 @@ class Fc:
   def __iter__(self):
     return iter(self.iter())
 
-  # TODO
-  def __index__(self):
-    pass
-
-  # TODO
   def __str__(self):
-    pass
+    str(self.list())
 
-  # TODO
   def __add__(self, other):
-    pass
+    return self.catTail(other)
+
+  def __radd__(self, other):
+    return self.catHead(other)
 
 
 if __name__ == "__main__":

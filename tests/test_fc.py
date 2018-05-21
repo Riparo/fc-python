@@ -282,3 +282,12 @@ def test_magic_iter():
   for i in Fc(l).filter(lambda x: x > 2 and x < 5):
     nl.append(i)
   assert nl == [3, 4]
+
+
+def test_magic_add():
+  l1 = [1]
+  l2 = [2]
+  assert (Fc(l1) + Fc(l2)).done() == [1, 2]
+  assert (Fc(l1) + l2).done() == [1, 2]
+  assert (Fc(l2) + Fc(l1)).done() == [2, 1]
+  assert (Fc(l2) + l1).done() == [2, 1]

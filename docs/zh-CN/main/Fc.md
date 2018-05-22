@@ -342,8 +342,8 @@ Fc([1,2,3]).print().show()
 `min`|None|元素|返回最小值，为空则返回 None|会缓存
 `sum`|None|值|对 Fc 求和|类型无法相加则会返回 `FcTypeError`
 `sumBy`|函数|值|先根据函数处理，再求和|异常抛出情况如 `sum`
-`len`/`count`/`size`|None|求 Fc 的长度|三个等价
-`done`/`list`|None|把 Fc 从迭代器转换成 list|方便 print 或者切片操作
+`len`/`count`/`size`|None|值|求 Fc 的长度|三个等价
+`done`/`list`|None|列表|把 Fc 从迭代器转换成 list|方便 print 或者切片操作
 `forEach`|函数|None|用参数函数对每个元素进行处理，例如 print 等等|函数类型为单参数(元素)
 `forEachIndexed`|函数|None|用参数函数对每个元素进行处理，例如 print 等等|函数类型为双参数(index,元素)
 `firstOrNone`|函数|对象|返回满足函数条件的第一个值，当未找到的时候，返回 None|自己实现的，所以会不用担心性能问题

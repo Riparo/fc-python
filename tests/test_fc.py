@@ -222,19 +222,19 @@ def test_firstOrNone():
 
 def test_lastOrNull():
   l = [1, 2, 3, 4, 5, 6, 7]
-  mv = Fc(l).lastOrNull(lambda x: x == 10)
+  mv = Fc(l).lastOrNone(lambda x: x == 10)
   assert mv == None
-  mv = Fc(l).lastOrNull(lambda x: x >= 3)
+  mv = Fc(l).lastOrNone(lambda x: x >= 3)
   assert mv == 7
 
 
 def test_singleOrNull():
   l = [1, 2, 3, 4, 5, 6, 7]
-  mv = Fc(l).singleOrNull(lambda x: x == 10)
+  mv = Fc(l).singleOrNone(lambda x: x == 10)
   assert mv == None
-  mv = Fc(l).singleOrNull(lambda x: x >= 3)
+  mv = Fc(l).singleOrNone(lambda x: x >= 3)
   assert mv == None
-  mv = Fc(l).singleOrNull(lambda x: x == 3)
+  mv = Fc(l).singleOrNone(lambda x: x == 3)
   assert mv == 3
 
 
@@ -254,6 +254,7 @@ def test_index():
   l = [0, 1, 2, 3, 4, 5, 6, 7]
   mv = Fc(l).index(3)
   assert mv == 3
+  assert Fc(l).index(30) == None
 
 
 def test_any():

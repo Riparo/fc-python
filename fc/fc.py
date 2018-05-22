@@ -284,6 +284,7 @@ class Fc:
       if i == index:
         return it
       i += 1
+    return None
 
   def any(self, obj):
     for it in self.__mylist:
@@ -387,7 +388,7 @@ class Fc:
       return None
 
   @paramMustBeFunction
-  def lastOrNull(self, func):
+  def lastOrNone(self, func):
     saved = None
     for it in self.__mylist:
       if func(it) == True:
@@ -395,7 +396,7 @@ class Fc:
     return saved
 
   @paramMustBeFunction
-  def singleOrNull(self, func):
+  def singleOrNone(self, func):
     saved = None
     for it in self.__mylist:
       if func(it) == True:

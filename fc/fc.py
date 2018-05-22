@@ -454,4 +454,5 @@ Fc_ = type("Fc_", (object,), newDict)
 del newDict
 
 if __name__ == "__main__":
+  Fc.reduce
   pass

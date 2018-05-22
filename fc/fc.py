@@ -40,6 +40,7 @@ class Fc:
     self.__mylist = mylist
     self.__max = None
     self.__min = None
+    self.__len = None
 
   @paramMustBeFunction
   def map(self, func):
@@ -203,6 +204,9 @@ class Fc:
 
     return type(self)(tmp(other))
 
+  def append(self, other):
+    return self.add(object)
+
   def addTail(self, other):
     return self.add(other)
 
@@ -345,7 +349,9 @@ class Fc:
     return reduce(func, self.__mylist)
 
   def len(self):
-    return len(list(self.__mylist))
+    if self.__len == None:
+      self.__len = len(list(self.__mylist))
+    return self.__len
 
   def count(self):
     return self.len()
@@ -448,28 +454,5 @@ Fc_ = type("Fc_", (object,), newDict)
 del newDict
 
 if __name__ == "__main__":
-  # l = (
-  #   Fc([1, 2, 3, 4, 5])
-  #     .map(lambda x: x + 1)
-  #     .print()
-  #     .filter(lambda x: x > 4)
-  #     .print()
-  #     .done()
-  # )
-  # print(l)
-  # class PrintTest:
-  #   def __init__(self, l):
-  #     self.__l = l
-  #
-  #   def print(self):
-  #     print(list(self.__l))
-  #     return self
-  #
-  #
-  # PrintTest(map(lambda x: x + 1, range(0, 4))).print().print()
 
-  # print()
-  # Fc([1, 2, 3, 4]).map(lambda x: x + 1).map(lambda x: x + 1).print().print().print().print()
-  # print()
-  # Fc([5, 4, 3, 2, 1]).print().print()
   pass

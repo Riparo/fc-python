@@ -135,12 +135,16 @@ def test_limit_take():
   assert ml == l
 
 
-def test_add_addTail_addHead():
+def test_add_addTail_addHead_append():
   l = [1, 2, 3]
   v = 4
   assert Fc(l).add(v).done() == [1, 2, 3, 4]
   assert Fc(l).addTail(v).done() == [1, 2, 3, 4]
   assert Fc(l).addHead(v).done() == [4, 1, 2, 3]
+
+  assert (Fc([1, 2]) + [3, 4]).done() == [1, 2, 3, 4]
+  assert ([1, 2] + Fc([3, 4])).done() == [1, 2, 3, 4]
+  assert (Fc([1, 2]) + Fc([3, 4])).done() == [1, 2, 3, 4]
 
 
 def test_cat_catTail_catHead():
@@ -149,6 +153,10 @@ def test_cat_catTail_catHead():
   assert Fc(l).cat(l2).done() == [1, 2, 3, 4, 5, 6]
   assert Fc(l).catTail(l2).done() == [1, 2, 3, 4, 5, 6]
   assert Fc(l).catHead(l2).done() == [4, 5, 6, 1, 2, 3]
+
+
+def test_string():
+  assert str(Fc([1, 2, 3])) == "[1, 2, 3]"
 
 
 def test_taskLast():

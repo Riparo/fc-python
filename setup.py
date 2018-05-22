@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fc',
-    version='0.1.2',
+    version='0.1.3',
     description='Enables Python to be functionally chain-styled.',
     python_requires='>=3.4',
     url='https://github.com/Thoxvi/Function-Chain-Python',

@@ -87,17 +87,16 @@ class Fc:
     return type(self)(tmp(start, count))
 
   def skip(self, count):
-    if count <= 0:
-      return self
-
-    def tmp(count):
-      c1 = 0
-      for it in self.__mylist:
-        if c1 >= count:
-          yield it
-        c1 += 1
-
-    return type(self)(tmp(count))
+    # if count <= 0:
+    #   return self
+    # def tmp(count):
+    #   c1 = 0
+    #   for it in self.__mylist:
+    #     if c1 >= count:
+    #       yield it
+    #     c1 += 1
+    # return type(self)(tmp(count))
+    return self.getAfter(count)
 
   def dropLast(self, count):
     if count < 0:
@@ -218,7 +217,7 @@ class Fc:
 
     return type(self)(tmp(other))
 
-  def filterNotNull(self):
+  def filterNotNone(self):
     return self.filter(lambda x: x != None)
 
   @paramMustBeFunction
@@ -263,10 +262,10 @@ class Fc:
 
     return type(self)(tmp(index))
 
-  def product(self, vlist):
-    if not isinstance(vlist, Iterable):
-      raise FcTypeError(str(vlist) + " is Not Iterable")
-    return type(self)(product(self.__mylist, vlist))
+  def product(self, *vlist):
+    if not isinstance(vlist[0], Iterable):
+      raise FcTypeError(str(vlist[0]) + " is Not Iterable")
+    return type(self)(product(self.__mylist, *vlist))
 
   # some iterable like `map`,just can only be consumed once
   def print(self):
@@ -454,5 +453,4 @@ Fc_ = type("Fc_", (object,), newDict)
 del newDict
 
 if __name__ == "__main__":
-
   pass

@@ -6,7 +6,7 @@ Enables Python to be functionally chain-styled.
 
 ## Document
 
-- Simplified Chinese documents **[here](./docs/zh-CN/main/README.md)**.
+- **Simplified Chinese documents** **[here](./docs/zh-CN/main/README.md)**.
 
 If you are interested in me,you can follow my [Blog](https://blog.thoxvi.com/2018/05/17/Fuck%E8%BF%99%E4%B8%AA%E4%B8%96%E7%95%8C%E4%B8%8D%E5%A4%9F%E5%A5%BD%E7%9A%84%E4%B8%9C%E8%A5%BF/)(~~一波软广2333~~)。
 

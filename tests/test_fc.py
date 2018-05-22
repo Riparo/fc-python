@@ -240,7 +240,7 @@ def test_singleOrNull():
 
 def test_filterNotNull():
   l = [1, None, None, None, 7]
-  ml = Fc(l).filterNotNull().done()
+  ml = Fc(l).filterNotNone().done()
   assert ml == [1, 7]
 
 

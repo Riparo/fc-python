@@ -13,10 +13,56 @@ def test_map():
   assert ml == [2, 3, 4, 5, 6, 7, 8]
 
 
+def test_product():
+  l = [1, 2]
+  l2 = [3, 4]
+  assert Fc(l).product(l2).done() == [
+    (1, 3),
+    (1, 4),
+    (2, 3),
+    (2, 4),
+  ]
+
+
 def test_filter():
   l = [1, 2, 3, 4, 5, 6, 7]
   ml = Fc(l).filter(lambda x: x > 3).filter(lambda x: x < 6).done()
   assert ml == [4, 5]
+
+
+def test_set():
+  l = [1, 1, 2, 3, 3]
+  ml = Fc(l).set()
+  for i in [1, 2, 3]:
+    assert i in ml
+  assert ml.size() == 3
+
+
+def test_insert():
+  l = [1, 2, 3, 4]
+  assert Fc(l).insert(0, 0).done() == [0, 1, 2, 3, 4]
+  assert Fc(l).insert(10, 0).done() == l
+  try:
+    Fc(l).insert(-1, 1).done()
+    assert "FcRangeError not thrown" == "False"
+  except FcRangeError as e:
+    assert 1 == 1
+
+
+def test_insertList():
+  l = [2, 3, 4]
+  assert Fc(l).insertList(0, [0, 1]).done() == [0, 1, 2, 3, 4]
+  assert Fc(l).insertList(10, [0, 1, 2, 3]).done() == l
+  try:
+    Fc(l).insertList(-1, [0]).done()
+    assert "FcRangeError not thrown" == "False"
+  except FcRangeError as e:
+    assert 1 == 1
+  try:
+    Fc(l).insertList(1, 0).done()
+    assert "FcTypeError not thrown" == "False"
+  except FcTypeError as e:
+    assert 1 == 1
 
 
 def test_sort():

@@ -1,6 +1,7 @@
-from functools import reduce
+from functools import reduce, wraps
 from collections import Iterable
 from types import FunctionType
+from itertools import product
 
 
 class FcTypeError(Exception):
@@ -15,6 +16,7 @@ def paramMustBeFunction(testFunction):
   def test(func):
     return isinstance(func, FunctionType)
 
+  @wraps(testFunction)
   def dealFunction(*args, **kwargs):
     l = len(args)
     if l == 1 and not test(args[0]):
@@ -46,6 +48,9 @@ class Fc:
   @paramMustBeFunction
   def filter(self, func):
     return type(self)(filter(func, self.__mylist))
+
+  def set(self):
+    return type(self)(set(self.__mylist))
 
   def sort(self, func=None):
     if func is None:
@@ -219,6 +224,55 @@ class Fc:
   def reverse(self):
     return type(self)(reversed(self.__mylist))
 
+  def insert(self, index, value):
+    if index < 0:
+      raise FcRangeError(str(index) + " can not be less than 0")
+
+    def tmp(index):
+      i = 0
+      for it in self.__mylist:
+        if i == index:
+          yield value
+          yield it
+        else:
+          yield it
+        i += 1
+
+    return type(self)(tmp(index))
+
+  def insertList(self, index, vlist):
+    if index < 0:
+      raise FcRangeError(str(index) + " can not be less than 0")
+    if not isinstance(vlist, Iterable):
+      raise FcTypeError(str(vlist) + " is Not Iterable")
+
+    def tmp(index):
+      i = 0
+      for it in self.__mylist:
+        if i == index:
+          for lit in vlist:
+            yield lit
+          yield it
+        else:
+          yield it
+        i += 1
+
+    return type(self)(tmp(index))
+
+  def product(self, vlist):
+    if not isinstance(vlist, Iterable):
+      raise FcTypeError(str(vlist) + " is Not Iterable")
+    return type(self)(product(self.__mylist, vlist))
+
+  # some iterable like `map`,just can only be consumed once
+  def print(self):
+    tmp = list(self.__mylist)
+    print(tmp)
+    return type(self)(tmp)
+
+  def show(self):
+    return self.print()
+
   # ---------- Cannot be chained ----------
 
   def index(self, index):
@@ -294,7 +348,10 @@ class Fc:
     return len(list(self.__mylist))
 
   def count(self):
-    return len(list(self.__mylist))
+    return self.len()
+
+  def size(self):
+    return self.len()
 
   def done(self):
     return list(self.__mylist)
@@ -352,13 +409,22 @@ class Fc:
     return iter(self.iter())
 
   def __str__(self):
-    str(self.list())
+    return str(self.list())
 
   def __add__(self, other):
     return self.catTail(other)
 
   def __radd__(self, other):
     return self.catHead(other)
+
+  def __enter__(self):
+    return self
+
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    if exc_type != None:
+      print(exc_type)
+      print(exc_val)
+      print(exc_tb)
 
 
 newDict = {}
@@ -373,10 +439,37 @@ for name in Fc.__dict__:
   newDict[newName] = Fc.__dict__[name]
 Fc_ = type("Fc_", (object,), newDict)
 
+#
+# def funcable(string):
+#   return eval(string)
+
+
 # clean field
 del newDict
 
 if __name__ == "__main__":
-  l = [1, 2, 3, 4, 1]
-  Fc(l).take(2).forEach(lambda x: print(x))
-  Fc_(l).take(2).for_each(lambda x: print(x))
+  # l = (
+  #   Fc([1, 2, 3, 4, 5])
+  #     .map(lambda x: x + 1)
+  #     .print()
+  #     .filter(lambda x: x > 4)
+  #     .print()
+  #     .done()
+  # )
+  # print(l)
+  # class PrintTest:
+  #   def __init__(self, l):
+  #     self.__l = l
+  #
+  #   def print(self):
+  #     print(list(self.__l))
+  #     return self
+  #
+  #
+  # PrintTest(map(lambda x: x + 1, range(0, 4))).print().print()
+
+  # print()
+  # Fc([1, 2, 3, 4]).map(lambda x: x + 1).map(lambda x: x + 1).print().print().print().print()
+  # print()
+  # Fc([5, 4, 3, 2, 1]).print().print()
+  pass

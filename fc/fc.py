@@ -41,27 +41,27 @@ class Fc:
 
   @paramMustBeFunction
   def map(self, func):
-    return Fc(map(func, self.__mylist))
+    return type(self)(map(func, self.__mylist))
 
   @paramMustBeFunction
   def filter(self, func):
-    return Fc(filter(func, self.__mylist))
+    return type(self)(filter(func, self.__mylist))
 
   def sort(self, func=None):
     if func is None:
-      return Fc(list(sorted(self.__mylist)))
+      return type(self)(list(sorted(self.__mylist)))
     else:
       if not isinstance(func, FunctionType):
         raise FcTypeError(str(func) + " is Not Function")
-      return Fc(list(sorted(self.__mylist, key=func)))
+      return type(self)(list(sorted(self.__mylist, key=func)))
 
   def resort(self, func=None):
     if func is None:
-      return Fc(sorted(self.__mylist, reverse=True))
+      return type(self)(sorted(self.__mylist, reverse=True))
     else:
       if not isinstance(func, FunctionType):
         raise FcTypeError(str(func) + " is Not Function")
-      return Fc(sorted(self.__mylist, key=func, reverse=True))
+      return type(self)(sorted(self.__mylist, key=func, reverse=True))
 
   def getAfter(self, start, count=-1):
     def tmp(start, count=-1):
@@ -78,7 +78,7 @@ class Fc:
             c2 += 1
         c1 += 1
 
-    return Fc(tmp(start, count))
+    return type(self)(tmp(start, count))
 
   def skip(self, count):
     if count <= 0:
@@ -91,7 +91,7 @@ class Fc:
           yield it
         c1 += 1
 
-    return Fc(tmp(count))
+    return type(self)(tmp(count))
 
   def dropLast(self, count):
     if count < 0:
@@ -104,7 +104,7 @@ class Fc:
         l = l[:-count]
       else:
         l = []
-      return Fc(l)
+      return type(self)(l)
 
   def slice(self, indexList):
     indexList = sorted(indexList)
@@ -125,14 +125,14 @@ class Fc:
             yield it
         i += 1
 
-    return Fc(tmp(indexList))
+    return type(self)(tmp(indexList))
 
   def drop(self, count):
     return self.skip(count)
 
   def limit(self, count):
     if count <= 0:
-      return Fc([])
+      return type(self)([])
 
     def tmp(count):
       c1 = 0
@@ -143,7 +143,7 @@ class Fc:
         else:
           c1 += 1
 
-    return Fc(tmp(count))
+    return type(self)(tmp(count))
 
   def take(self, count):
     return self.limit(count)
@@ -152,14 +152,14 @@ class Fc:
     if count < 0:
       raise FcRangeError(str(count) + " can not be less than 0")
     elif count == 0:
-      return Fc([])
+      return type(self)([])
     else:
       l = self.list()
       if len(l) > count:
         l = l[len(l) - count:]
       else:
         pass
-      return Fc(l)
+      return type(self)(l)
 
   # other is Iterable
   def cat(self, other):
@@ -172,7 +172,7 @@ class Fc:
       for it in other:
         yield it
 
-    return Fc(tmp(other))
+    return type(self)(tmp(other))
 
   def catTail(self, other):
     return self.cat(other)
@@ -187,7 +187,7 @@ class Fc:
       for it in self.__mylist:
         yield it
 
-    return Fc(tmp(other))
+    return type(self)(tmp(other))
 
   # other is object
   def add(self, other):
@@ -196,7 +196,7 @@ class Fc:
         yield it
       yield other
 
-    return Fc(tmp(other))
+    return type(self)(tmp(other))
 
   def addTail(self, other):
     return self.add(other)
@@ -207,7 +207,7 @@ class Fc:
       for it in self.__mylist:
         yield it
 
-    return Fc(tmp(other))
+    return type(self)(tmp(other))
 
   def filterNotNull(self):
     return self.filter(lambda x: x != None)
@@ -217,7 +217,7 @@ class Fc:
     return self.filter(lambda x: not func(x))
 
   def reverse(self):
-    return Fc(reversed(self.__mylist))
+    return type(self)(reversed(self.__mylist))
 
   # ---------- Cannot be chained ----------
 
@@ -361,6 +361,22 @@ class Fc:
     return self.catHead(other)
 
 
+newDict = {}
+for name in Fc.__dict__:
+  upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  newName = ""
+  for c in name:
+    if c in upper:
+      newName += "_" + c.lower()
+    else:
+      newName += c
+  newDict[newName] = Fc.__dict__[name]
+Fc_ = type("Fc_", (object,), newDict)
+
+# clean field
+del newDict
+
 if __name__ == "__main__":
   l = [1, 2, 3, 4, 1]
   Fc(l).take(2).forEach(lambda x: print(x))
+  Fc_(l).take(2).for_each(lambda x: print(x))

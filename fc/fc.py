@@ -366,6 +366,22 @@ class Fc:
     '''Just an alias for done.'''
     return self.done()
 
+  def joinBy(self, sign):
+    buff = ""
+    before = None
+    for it in self.__mylist:
+      if before == None:
+        before = it
+      else:
+        buff += str(before) + sign
+        before = it
+    if buff == "":
+      if before != None:
+        buff = str(before)
+    else:
+      buff += str(it)
+    return buff
+
   @paramMustBeFunction
   def forEach(self, func):
     for it in self.__mylist:
@@ -454,5 +470,4 @@ Fc_ = type("Fc_", (object,), newDict)
 del newDict
 
 if __name__ == "__main__":
-  Fc.reduce
   pass

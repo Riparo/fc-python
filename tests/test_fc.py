@@ -271,6 +271,11 @@ def test_empty():
   l = []
   assert Fc(l).empty() == True
 
+def test_joinBy():
+  assert Fc([1, 2, 3]).joinBy(",")=="1,2,3"
+  assert Fc([]).joinBy(",")==""
+  assert Fc([1]).joinBy(",")=="1"
+  assert Fc([1,2]).joinBy(",")=="1,2"
 
 def test_none():
   l = [0, 1, 2, 3, 4, 5, 6, 7]

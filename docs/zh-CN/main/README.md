@@ -53,16 +53,18 @@ from fc import Fc
 
 # 建议用括号 () 把链式的 Fc 包起来，就可以实现多行链式调用了(虽然有点丑，但是是无可奈何的)
 
-
 l = (
   Fc([1, 2, 3, 4, 5])
     .map(lambda x: x + 1)
-    .filter(lambda x: x > 4)
-    .print() # [5, 6]
-    .map(lambda x: x + 1)
+    .filter(lambda x: x > 4).print()    # [5, 6]
+    .map(lambda x: x + 1).print()       # [6, 7]
+    .cat([8, 9]).print()                # [6, 7, 8, 9]
+    .add(10).print()                    # [6, 7, 8, 9, 10]
+    .catHead([1, 2, 3, 4, 5]).print()   # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    .limit(3)
     .done()
 )
-assert l == [6, 7]
+assert l == [1, 2, 3]
 ```
 
 并且当你不需要 print 的时候，只需要简单在前面加上一个 `#` 即可轻松注释。

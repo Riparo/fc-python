@@ -28,12 +28,11 @@ from fc import Fc
 l = (
   Fc([1, 2, 3, 4, 5])
     .map(lambda x: x + 1)
-    .filter(lambda x: x > 4)
-    .print()  # [5, 6]
-    .map(lambda x: x + 1).print()  # [6, 7]
-    .cat([8, 9]).print()  # [6, 7, 8, 9]
-    .add(10).print()  # [6, 7, 8, 9, 10]
-    .catHead([1, 2, 3, 4, 5]).print()  # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    .filter(lambda x: x > 4).print()    # [5, 6]
+    .map(lambda x: x + 1).print()       # [6, 7]
+    .cat([8, 9]).print()                # [6, 7, 8, 9]
+    .add(10).print()                    # [6, 7, 8, 9, 10]
+    .catHead([1, 2, 3, 4, 5]).print()   # [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
     .limit(3)
     .done()
 )

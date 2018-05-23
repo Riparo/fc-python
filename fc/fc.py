@@ -21,7 +21,7 @@ def paramMustBeFunction(testFunction):
     l = len(args)
     if l == 1 and not test(args[0]):
       raise FcTypeError(str(args[0]) + " is Not Function")
-    elif l == 2 and not test(args[1]):
+    elif l >= 2 and not test(args[1]):
       raise FcTypeError(str(args[1]) + " is Not Function")
     return testFunction(*args, **kwargs)
 
@@ -33,41 +33,42 @@ class Fc:
   FunctionChain
   '''
 
-  def __init__(self, mylist):
+  def __init__(self, mylist, opt=True):
     if not isinstance(mylist, Iterable):
       raise FcTypeError(str(list) + " is Not Iterable")
     # __mylist is val
+    if not opt: mylist = list(mylist)
     self.__mylist = mylist
     self.__max = None
     self.__min = None
     self.__len = None
 
-  def map(self, func):
-    return type(self)(map(func, self.__mylist))
+  def map(self, func, opt=True):
+    return type(self)(map(func, self.__mylist), opt=opt)
 
-  def filter(self, func):
-    return type(self)(filter(func, self.__mylist))
+  def filter(self, func, opt=True):
+    return type(self)(filter(func, self.__mylist), opt=opt)
 
   def set(self):
     return type(self)(set(self.__mylist))
 
-  def sort(self, func=None):
+  def sort(self, func=None, opt=True):
     if func is None:
-      return type(self)(list(sorted(self.__mylist)))
+      return type(self)(list(sorted(self.__mylist)), opt=opt)
     else:
       if not isinstance(func, FunctionType):
         raise FcTypeError(str(func) + " is Not Function")
-      return type(self)(list(sorted(self.__mylist, key=func)))
+      return type(self)(list(sorted(self.__mylist, key=func)), opt=opt)
 
-  def resort(self, func=None):
+  def resort(self, func=None, opt=True):
     if func is None:
-      return type(self)(sorted(self.__mylist, reverse=True))
+      return type(self)(sorted(self.__mylist, reverse=True), opt=opt)
     else:
       if not isinstance(func, FunctionType):
         raise FcTypeError(str(func) + " is Not Function")
-      return type(self)(sorted(self.__mylist, key=func, reverse=True))
+      return type(self)(sorted(self.__mylist, key=func, reverse=True), opt=opt)
 
-  def getAfter(self, start, count=-1):
+  def getAfter(self, start, count=-1, opt=True):
     def tmp(start, count=-1):
       if start < 0:
         start = 0
@@ -82,9 +83,9 @@ class Fc:
             c2 += 1
         c1 += 1
 
-    return type(self)(tmp(start, count))
+    return type(self)(tmp(start, count), opt=opt)
 
-  def skip(self, count):
+  def skip(self, count, opt=True):
     # if count <= 0:
     #   return self
     # def tmp(count):
@@ -94,9 +95,9 @@ class Fc:
     #       yield it
     #     c1 += 1
     # return type(self)(tmp(count))
-    return self.getAfter(count)
+    return self.getAfter(count, opt=opt)
 
-  def dropLast(self, count):
+  def dropLast(self, count, opt=True):
     if count < 0:
       raise FcRangeError(str(count) + " can not be less than 0")
     elif count == 0:
@@ -107,9 +108,9 @@ class Fc:
         l = l[:-count]
       else:
         l = []
-      return type(self)(l)
+      return type(self)(l, opt=opt)
 
-  def slice(self, indexList):
+  def slice(self, indexList, opt=True):
     indexList = sorted(indexList)
 
     def tmp(indexList):
@@ -128,12 +129,12 @@ class Fc:
             yield it
         i += 1
 
-    return type(self)(tmp(indexList))
+    return type(self)(tmp(indexList), opt=opt)
 
-  def drop(self, count):
-    return self.skip(count)
+  def drop(self, count, opt=True):
+    return self.skip(count, opt=opt)
 
-  def limit(self, count):
+  def limit(self, count, opt=True):
     if count <= 0:
       return type(self)([])
 
@@ -146,12 +147,12 @@ class Fc:
         else:
           c1 += 1
 
-    return type(self)(tmp(count))
+    return type(self)(tmp(count), opt=opt)
 
-  def take(self, count):
-    return self.limit(count)
+  def take(self, count, opt=True):
+    return self.limit(count, opt=opt)
 
-  def takeLast(self, count):
+  def takeLast(self, count, opt=True):
     if count < 0:
       raise FcRangeError(str(count) + " can not be less than 0")
     elif count == 0:
@@ -162,10 +163,10 @@ class Fc:
         l = l[len(l) - count:]
       else:
         pass
-      return type(self)(l)
+      return type(self)(l, opt=opt)
 
   # other is Iterable
-  def cat(self, other):
+  def cat(self, other, opt=True):
     if not isinstance(other, Iterable):
       raise FcTypeError(str(other) + "is not Iterable")
 
@@ -175,12 +176,12 @@ class Fc:
       for it in other:
         yield it
 
-    return type(self)(tmp(other))
+    return type(self)(tmp(other), opt=opt)
 
-  def catTail(self, other):
-    return self.cat(other)
+  def catTail(self, other, opt=True):
+    return self.cat(other, opt=opt)
 
-  def catHead(self, other):
+  def catHead(self, other, opt=True):
     if not isinstance(other, Iterable):
       raise FcTypeError(str(other) + "is not Iterable")
 
@@ -190,41 +191,41 @@ class Fc:
       for it in self.__mylist:
         yield it
 
-    return type(self)(tmp(other))
+    return type(self)(tmp(other), opt=opt)
 
   # other is object
-  def add(self, other):
+  def add(self, other, opt=True):
     def tmp(other):
       for it in self.__mylist:
         yield it
       yield other
 
-    return type(self)(tmp(other))
+    return type(self)(tmp(other), opt=opt)
 
-  def append(self, other):
-    return self.add(object)
+  def append(self, other, opt=True):
+    return self.add(other, opt=opt)
 
-  def addTail(self, other):
-    return self.add(other)
+  def addTail(self, other, opt=True):
+    return self.add(other, opt=opt)
 
-  def addHead(self, other):
+  def addHead(self, other, opt=True):
     def tmp(other):
       yield other
       for it in self.__mylist:
         yield it
 
-    return type(self)(tmp(other))
+    return type(self)(tmp(other), opt=opt)
 
-  def filterNotNone(self):
-    return self.filter(lambda x: x != None)
+  def filterNotNone(self, opt=True):
+    return self.filter(lambda x: x != None, opt=opt)
 
-  def filterNot(self, func):
-    return self.filter(lambda x: not func(x))
+  def filterNot(self, func, opt=True):
+    return self.filter(lambda x: not func(x), opt=opt)
 
-  def reverse(self):
-    return type(self)(reversed(self.__mylist))
+  def reverse(self, opt=True):
+    return type(self)(reversed(self.__mylist), opt=opt)
 
-  def insert(self, index, value):
+  def insert(self, index, value, opt=True):
     if index < 0:
       raise FcRangeError(str(index) + " can not be less than 0")
 
@@ -238,9 +239,9 @@ class Fc:
           yield it
         i += 1
 
-    return type(self)(tmp(index))
+    return type(self)(tmp(index), opt=opt)
 
-  def insertList(self, index, vlist):
+  def insertList(self, index, vlist, opt=True):
     if index < 0:
       raise FcRangeError(str(index) + " can not be less than 0")
     if not isinstance(vlist, Iterable):
@@ -257,12 +258,12 @@ class Fc:
           yield it
         i += 1
 
-    return type(self)(tmp(index))
+    return type(self)(tmp(index), opt=opt)
 
-  def product(self, *vlist):
+  def product(self, *vlist, opt=True):
     if not isinstance(vlist[0], Iterable):
       raise FcTypeError(str(vlist[0]) + " is Not Iterable")
-    return type(self)(product(self.__mylist, *vlist))
+    return type(self)(product(self.__mylist, *vlist), opt=opt)
 
   # some iterable like `map`,just can only be consumed once
   def print(self):

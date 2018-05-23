@@ -42,11 +42,9 @@ class Fc:
     self.__min = None
     self.__len = None
 
-  @paramMustBeFunction
   def map(self, func):
     return type(self)(map(func, self.__mylist))
 
-  @paramMustBeFunction
   def filter(self, func):
     return type(self)(filter(func, self.__mylist))
 
@@ -220,7 +218,6 @@ class Fc:
   def filterNotNone(self):
     return self.filter(lambda x: x != None)
 
-  @paramMustBeFunction
   def filterNot(self, func):
     return self.filter(lambda x: not func(x))
 
@@ -333,7 +330,6 @@ class Fc:
           raise FcTypeError(str(it) + " cannot add " + str(s))
     return s
 
-  @paramMustBeFunction
   def sumBy(self, func):
     return self.map(func).sum()
 
@@ -344,7 +340,6 @@ class Fc:
     else:
       return True
 
-  @paramMustBeFunction
   def reduce(self, func):
     return reduce(func, self.__mylist)
 
@@ -382,28 +377,25 @@ class Fc:
       buff += str(it)
     return buff
 
-  @paramMustBeFunction
   def forEach(self, func):
     for it in self.__mylist:
       func(it)
 
   # param `func` is (int index,obj iter_obj)->{}
   # like Kotlin ;-)
-  @paramMustBeFunction
+
   def forEachIndexed(self, func):
     index = 0
     for it in self.__mylist:
       func(index, it)
       index += 1
 
-  @paramMustBeFunction
   def firstOrNone(self, func):
     for it in self.__mylist:
       if func(it) == True: return it
     else:
       return None
 
-  @paramMustBeFunction
   def lastOrNone(self, func):
     saved = None
     for it in self.__mylist:
@@ -411,7 +403,6 @@ class Fc:
         saved = it
     return saved
 
-  @paramMustBeFunction
   def singleOrNone(self, func):
     saved = None
     for it in self.__mylist:
@@ -449,6 +440,24 @@ class Fc:
       print(exc_tb)
 
 
+testList = [
+  "map",
+  "filter",
+  "filterNot",
+  "sumBy",
+  "reduce",
+  "forEach",
+  "forEachIndexed",
+  "firstOrNone",
+  "singleOrNone",
+  "lastOrNone"
+]
+
+for name in Fc.__dict__:
+  if name in testList:
+    method = getattr(Fc, name)
+    setattr(Fc, name, paramMustBeFunction(method))
+
 newDict = {}
 for name in Fc.__dict__:
   upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -461,13 +470,8 @@ for name in Fc.__dict__:
   newDict[newName] = Fc.__dict__[name]
 Fc_ = type("Fc_", (object,), newDict)
 
-#
-# def funcable(string):
-#   return eval(string)
-
-
-# clean field
 del newDict
+del testList
 
 if __name__ == "__main__":
   pass

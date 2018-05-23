@@ -8,15 +8,11 @@ Use `Pytest` as a test framework
 
 
 def test_map():
-  l = [1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).map(lambda x: x + 1).done()
-  assert ml == [2, 3, 4, 5, 6, 7, 8]
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).map(lambda x: x + 1).done() == [2, 3, 4, 5, 6, 7, 8]
 
 
 def test_product():
-  l = [1, 2]
-  l2 = [3, 4]
-  assert Fc(l).product(l2).done() == [
+  assert Fc([1, 2]).product([3, 4]).done() == [
     (1, 3),
     (1, 4),
     (2, 3),
@@ -25,122 +21,92 @@ def test_product():
 
 
 def test_filter():
-  l = [1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).filter(lambda x: x > 3).filter(lambda x: x < 6).done()
-  assert ml == [4, 5]
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).filter(lambda x: x > 3).filter(lambda x: x < 6).done() == [4, 5]
 
 
 def test_set():
-  l = [1, 1, 2, 3, 3]
-  ml = Fc(l).set()
   for i in [1, 2, 3]:
-    assert i in ml
-  assert ml.size() == 3
+    assert i in Fc([1, 1, 2, 3, 3]).set()
+  assert Fc([1, 1, 2, 3, 3]).set().size() == 3
 
 
 def test_insert():
-  l = [1, 2, 3, 4]
-  assert Fc(l).insert(0, 0).done() == [0, 1, 2, 3, 4]
-  assert Fc(l).insert(10, 0).done() == l
+  assert Fc([1, 2, 3, 4]).insert(0, 0).done() == [0, 1, 2, 3, 4]
+  assert Fc([1, 2, 3, 4]).insert(10, 0).done() == [1, 2, 3, 4]
   try:
-    Fc(l).insert(-1, 1).done()
+    Fc([1, 2, 3, 4]).insert(-1, 1).done()
     assert "FcRangeError not thrown" == "False"
   except FcRangeError as e:
     assert 1 == 1
 
 
 def test_insertList():
-  l = [2, 3, 4]
-  assert Fc(l).insertList(0, [0, 1]).done() == [0, 1, 2, 3, 4]
-  assert Fc(l).insertList(10, [0, 1, 2, 3]).done() == l
+  assert Fc([2, 3, 4]).insertList(0, [0, 1]).done() == [0, 1, 2, 3, 4]
+  assert Fc([2, 3, 4]).insertList(10, [0, 1, 2, 3]).done() == [2, 3, 4]
   try:
-    Fc(l).insertList(-1, [0]).done()
+    Fc([2, 3, 4]).insertList(-1, [0]).done()
     assert "FcRangeError not thrown" == "False"
   except FcRangeError as e:
     assert 1 == 1
   try:
-    Fc(l).insertList(1, 0).done()
+    Fc([2, 3, 4]).insertList(1, 0).done()
     assert "FcTypeError not thrown" == "False"
   except FcTypeError as e:
     assert 1 == 1
 
 
 def test_sort():
-  l = [7, 6, 5, 4, 3, 2, 1]
-  ml = Fc(l).sort().done()
-  assert ml == [1, 2, 3, 4, 5, 6, 7]
+  assert Fc([7, 6, 5, 4, 3, 2, 1]).sort().done() == [1, 2, 3, 4, 5, 6, 7]
 
 
 def test_resort():
-  l = [1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).resort().done()
-  assert ml == [7, 6, 5, 4, 3, 2, 1]
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).resort().done() == [7, 6, 5, 4, 3, 2, 1]
 
 
 def test_getAfter():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).getAfter(-20).done()
-  assert ml == [0, 1, 2, 3, 4, 5, 6, 7]
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).getAfter(2).done()
-  assert ml == [2, 3, 4, 5, 6, 7]
-  ml = Fc(l).getAfter(4, 1).done()
-  assert ml == [4]
-  ml = Fc(l).getAfter(0, 2).done()
-  assert ml == [0, 1]
-  ml = Fc(l).getAfter(4, 0).done()
-  assert ml == []
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).getAfter(-20).done() == [0, 1, 2, 3, 4, 5, 6, 7]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).getAfter(2).done() == [2, 3, 4, 5, 6, 7]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).getAfter(4, 1).done() == [4]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).getAfter(0, 2).done() == [0, 1]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).getAfter(4, 0).done() == []
 
 
 def test_skip_drop():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).skip(-1).done()
-  assert ml == [0, 1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).skip(2).done()
-  assert ml == [2, 3, 4, 5, 6, 7]
-  ml = Fc(l).skip(10).done()
-  assert ml == []
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).skip(-1).done() == [0, 1, 2, 3, 4, 5, 6, 7]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).skip(2).done() == [2, 3, 4, 5, 6, 7]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).skip(10).done() == []
 
 
 def test_dropLast():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
   try:
-    Fc(l).dropLast(-1).done()
+    Fc([0, 1, 2, 3, 4, 5, 6, 7]).dropLast(-1).done()
     assert "FcRangeError not thrown" == "False"
   except FcRangeError as e:
     assert 1 == 1
-  assert Fc(l).dropLast(4).done() == [0, 1, 2, 3]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).dropLast(4).done() == [0, 1, 2, 3]
 
 
 def test_slice():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
-  assert Fc(l).slice([1, 5, 6]).done() == [1, 5, 6]
-  assert Fc(l).slice([1, 5, 6, 10]).done() == [1, 5, 6]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).slice([1, 5, 6]).done() == [1, 5, 6]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).slice([1, 5, 6, 10]).done() == [1, 5, 6]
   try:
-    assert Fc(l).slice([-1, 2, 3]).done() == [2, 3]
+    assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).slice([-1, 2, 3]).done() == [2, 3]
     assert "FcRangeError not thrown" == "False"
   except FcRangeError as e:
     assert 1 == 1
 
 
 def test_limit_take():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).limit(-1).done()
-  assert ml == []
-  ml = Fc(l).limit(0).done()
-  assert ml == []
-  ml = Fc(l).limit(3).done()
-  assert ml == [0, 1, 2]
-  ml = Fc(l).limit(10).done()
-  assert ml == l
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).limit(-1).done() == []
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).limit(0).done() == []
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).limit(3).done() == [0, 1, 2]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).limit(10).done() == [0, 1, 2, 3, 4, 5, 6, 7]
 
 
 def test_add_addTail_addHead_append():
-  l = [1, 2, 3]
-  v = 4
-  assert Fc(l).add(v).done() == [1, 2, 3, 4]
-  assert Fc(l).addTail(v).done() == [1, 2, 3, 4]
-  assert Fc(l).addHead(v).done() == [4, 1, 2, 3]
+  assert Fc([1, 2, 3]).add(4).done() == [1, 2, 3, 4]
+  assert Fc([1, 2, 3]).addTail(4).done() == [1, 2, 3, 4]
+  assert Fc([1, 2, 3]).addHead(4).done() == [4, 1, 2, 3]
 
   assert (Fc([1, 2]) + [3, 4]).done() == [1, 2, 3, 4]
   assert ([1, 2] + Fc([3, 4])).done() == [1, 2, 3, 4]
@@ -148,11 +114,9 @@ def test_add_addTail_addHead_append():
 
 
 def test_cat_catTail_catHead():
-  l = [1, 2, 3]
-  l2 = [4, 5, 6]
-  assert Fc(l).cat(l2).done() == [1, 2, 3, 4, 5, 6]
-  assert Fc(l).catTail(l2).done() == [1, 2, 3, 4, 5, 6]
-  assert Fc(l).catHead(l2).done() == [4, 5, 6, 1, 2, 3]
+  assert Fc([1, 2, 3]).cat([4, 5, 6]).done() == [1, 2, 3, 4, 5, 6]
+  assert Fc([1, 2, 3]).catTail([4, 5, 6]).done() == [1, 2, 3, 4, 5, 6]
+  assert Fc([1, 2, 3]).catHead([4, 5, 6]).done() == [4, 5, 6, 1, 2, 3]
 
 
 def test_string():
@@ -160,51 +124,36 @@ def test_string():
 
 
 def test_taskLast():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).takeLast(10).done()
-  assert ml == l
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).takeLast(10).done() == [0, 1, 2, 3, 4, 5, 6, 7]
   try:
-    Fc(l).takeLast(-1).done()
+    Fc([0, 1, 2, 3, 4, 5, 6, 7]).takeLast(-1).done()
     assert "FcRangeError not thrown" == "False"
   except FcRangeError as e:
     assert 1 == 1
-  ml = Fc(l).takeLast(3).done()
-  assert ml == [5, 6, 7]
-  ml = Fc(l).takeLast(8).done()
-  assert ml == [0, 1, 2, 3, 4, 5, 6, 7]
-  ml = Fc(l).takeLast(0).done()
-  assert ml == []
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).takeLast(3).done() == [5, 6, 7]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).takeLast(8).done() == [0, 1, 2, 3, 4, 5, 6, 7]
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).takeLast(0).done() == []
 
 
 def test_len():
-  l = [1, 2, 3, 4, 5, 6, 7]
-  mll = Fc(l).filter(lambda x: x < 1).len()
-  assert mll == 0
-
-  mll = Fc(l).filter(lambda x: x > 4).len()
-  assert mll == 3
-
-  mll = Fc(l).filter(lambda x: x > 1 and x < 6).len()
-  assert mll == 4
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).filter(lambda x: x < 1).len() == 0
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).filter(lambda x: x > 4).len() == 3
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).filter(lambda x: x > 1 and x < 6).len() == 4
 
 
 def test_reduce():
-  l = [1, 2, 3, 4, 5, 6, 7]
-  result = Fc(l).reduce(lambda x, y: x + y)
-  assert result == 28
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).reduce(lambda x, y: x + y) == 28
 
 
 def test_forEach():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
   ml = []
-  Fc(l).forEach(lambda x: ml.append(x))
+  Fc([0, 1, 2, 3, 4, 5, 6, 7]).forEach(lambda x: ml.append(x))
   assert ml == [0, 1, 2, 3, 4, 5, 6, 7]
 
 
 def test_forEachIndexed():
-  l = [0, 1, 2]
   ml = []
-  Fc(l).forEachIndexed(lambda i, x: ml.append((i, x)))
+  Fc([0, 1, 2]).forEachIndexed(lambda i, x: ml.append((i, x)))
   assert ml == [
     (0, 0),
     (1, 1),
@@ -213,141 +162,104 @@ def test_forEachIndexed():
 
 
 def test_firstOrNone():
-  l = [1, 2, 3, 4, 5, 6, 7]
-  mv = Fc(l).firstOrNone(lambda x: x == 10)
-  assert mv == None
-  mv = Fc(l).firstOrNone(lambda x: x >= 3)
-  assert mv == 3
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).firstOrNone(lambda x: x == 10) == None
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).firstOrNone(lambda x: x >= 3) == 3
 
 
 def test_lastOrNull():
-  l = [1, 2, 3, 4, 5, 6, 7]
-  mv = Fc(l).lastOrNone(lambda x: x == 10)
-  assert mv == None
-  mv = Fc(l).lastOrNone(lambda x: x >= 3)
-  assert mv == 7
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).lastOrNone(lambda x: x == 10) == None
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).lastOrNone(lambda x: x >= 3) == 7
 
 
 def test_singleOrNull():
-  l = [1, 2, 3, 4, 5, 6, 7]
-  mv = Fc(l).singleOrNone(lambda x: x == 10)
-  assert mv == None
-  mv = Fc(l).singleOrNone(lambda x: x >= 3)
-  assert mv == None
-  mv = Fc(l).singleOrNone(lambda x: x == 3)
-  assert mv == 3
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).singleOrNone(lambda x: x == 10) == None
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).singleOrNone(lambda x: x >= 3) == None
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).singleOrNone(lambda x: x == 3) == 3
 
 
 def test_filterNotNull():
-  l = [1, None, None, None, 7]
-  ml = Fc(l).filterNotNone().done()
-  assert ml == [1, 7]
+  assert Fc([1, None, None, None, 7]).filterNotNone().done() == [1, 7]
 
 
 def test_filterNot():
-  l = [1, None, None, None, 7]
-  ml = Fc(l).filterNot(lambda x: x == None).done()
-  assert ml == [1, 7]
+  assert Fc([1, None, None, None, 7]).filterNot(lambda x: x == None).done() == [1, 7]
 
 
 def test_index():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
-  mv = Fc(l).index(3)
-  assert mv == 3
-  assert Fc(l).index(30) == None
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).index(3) == 3
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).index(30) == None
 
 
 def test_any():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
-  mv = Fc(l).any(3)
-  assert mv == True
-  mv = Fc(l).any(10)
-  assert mv == False
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).any(3) == True
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).any(10) == False
 
 
 def test_empty():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
-  assert Fc(l).empty() == False
-  l = []
-  assert Fc(l).empty() == True
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).empty() == False
+  assert Fc([]).empty() == True
+
 
 def test_joinBy():
-  assert Fc([1, 2, 3]).joinBy(",")=="1,2,3"
-  assert Fc([]).joinBy(",")==""
-  assert Fc([1]).joinBy(",")=="1"
-  assert Fc([1,2]).joinBy(",")=="1,2"
+  assert Fc([1, 2, 3]).joinBy(",") == "1,2,3"
+  assert Fc([]).joinBy(",") == ""
+  assert Fc([1]).joinBy(",") == "1"
+  assert Fc([1, 2]).joinBy(",") == "1,2"
+
 
 def test_none():
-  l = [0, 1, 2, 3, 4, 5, 6, 7]
-  assert Fc(l).none(10)
-  assert not Fc(l).none(1)
+  assert Fc([0, 1, 2, 3, 4, 5, 6, 7]).none(10)
+  assert not Fc([0, 1, 2, 3, 4, 5, 6, 7]).none(1)
 
 
 def test_all():
-  l = [1, 1, 1, 1, 1, 1, 1]
-  mv = Fc(l).all(1)
-  assert mv == True
-  mv = Fc(l).all(2)
-  assert mv == False
-  l = [1, 1, 2, 1, 1, 1, 1]
-  mv = Fc(l).all(1)
-  assert mv == False
-  mv = Fc(l).all(2)
-  assert mv == False
+  assert Fc([1, 1, 1, 1, 1, 1, 1]).all(1) == True
+  assert Fc([1, 1, 1, 1, 1, 1, 1]).all(2) == False
+  assert Fc([1, 1, 2, 1, 1, 1, 1]).all(1) == False
+  assert Fc([1, 1, 2, 1, 1, 1, 1]).all(2) == False
 
 
 def test_max_and_min():
-  l = []
-  assert Fc(l).max() == None
-  assert Fc(l).min() == None
-  l = [1, 2]
-  assert Fc(l).max() == 2
-  assert Fc(l).min() == 1
+  assert Fc([]).max() == None
+  assert Fc([]).min() == None
+  assert Fc([1, 2]).max() == 2
+  assert Fc([1, 2]).min() == 1
 
 
 def test_sumBy():
-  l = [{"a": 1}, {"a": 2}]
-  assert Fc(l).sumBy(lambda x: x["a"]) == 3
+  assert Fc([{"a": 1}, {"a": 2}]).sumBy(lambda x: x["a"]) == 3
 
 
 def test_reversed():
-  l = [1, 3, 2, 4]
-  assert Fc(l).reverse().done() == [4, 2, 3, 1]
+  assert Fc([1, 3, 2, 4]).reverse().done() == [4, 2, 3, 1]
 
 
 def test_sum():
-  l = []
-  assert Fc(l).sum() == None
-  l = [1, 2, 3, 4]
-  assert Fc(l).sum() == 10
-  l = [1, 2, 3, None]
+  assert Fc([]).sum() == None
+  assert Fc([1, 2, 3, 4]).sum() == 10
   try:
-    Fc(l).sum()
+    Fc([1, 2, 3, None]).sum()
     assert "FcTypeError not thrown" == "False"
   except FcTypeError as e:
     assert 1 == 1
 
 
 def test_iter():
-  l = [1, 2, 3, 4, 5, 6, 7]
   nl = []
-  for i in Fc(l).filter(lambda x: x > 2 and x < 5).iter():
+  for i in Fc([1, 2, 3, 4, 5, 6, 7]).filter(lambda x: x > 2 and x < 5).iter():
     nl.append(i)
   assert nl == [3, 4]
 
 
 def test_magic_iter():
-  l = [1, 2, 3, 4, 5, 6, 7]
   nl = []
-  for i in Fc(l).filter(lambda x: x > 2 and x < 5):
+  for i in Fc([1, 2, 3, 4, 5, 6, 7]).filter(lambda x: x > 2 and x < 5):
     nl.append(i)
   assert nl == [3, 4]
 
 
 def test_magic_add():
-  l1 = [1]
-  l2 = [2]
-  assert (Fc(l1) + Fc(l2)).done() == [1, 2]
-  assert (Fc(l1) + l2).done() == [1, 2]
-  assert (Fc(l2) + Fc(l1)).done() == [2, 1]
-  assert (Fc(l2) + l1).done() == [2, 1]
+  assert (Fc([1]) + Fc([2])).done() == [1, 2]
+  assert (Fc([1]) + [2]).done() == [1, 2]
+  assert (Fc([2]) + Fc([1])).done() == [2, 1]
+  assert (Fc([2]) + [1]).done() == [2, 1]

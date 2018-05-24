@@ -6,9 +6,16 @@ from fc import FcRangeError
 Use `Pytest` as a test framework
 '''
 
-
 def test_map():
   assert Fc([1, 2, 3, 4, 5, 6, 7]).map(lambda x: x + 1).done() == [2, 3, 4, 5, 6, 7, 8]
+
+
+def test_mapIndexed():
+  assert Fc([1, 2, 3]).mapIndexed(lambda i, x: (i, x)).done() == [
+    (0, 1),
+    (1, 2),
+    (2, 3),
+  ]
 
 
 def test_product():

@@ -47,6 +47,15 @@ class Fc:
   def map(self, func, opt=True):
     return type(self)(map(func, self.__mylist), opt=opt)
 
+  def mapIndexed(self, func, opt=True):
+    def tmp(func):
+      i = 0
+      for it in self.__mylist:
+        yield func(i, it)
+        i += 1
+
+    return type(self)(tmp(func), opt)
+
   def filter(self, func, opt=True):
     return type(self)(filter(func, self.__mylist), opt=opt)
 
@@ -448,6 +457,7 @@ class Fc:
 
 testList = [
   "map",
+  "mapIndexed",
   "filter",
   "filterNot",
   "sumBy",

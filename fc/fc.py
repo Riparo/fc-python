@@ -2,6 +2,7 @@ from functools import reduce, wraps
 from collections import Iterable
 from types import FunctionType
 from itertools import product
+from collections import Counter
 
 
 class FcTypeError(Exception):
@@ -148,6 +149,13 @@ class Fc:
           c1 += 1
 
     return type(self)(tmp(count), opt=opt)
+
+  def count(self, opt=True):
+    def tmp():
+      for it in Counter(self.__mylist).items():
+        yield it
+
+    return type(self)(tmp(), opt)
 
   def take(self, count, opt=True):
     return self.limit(count, opt=opt)
@@ -348,9 +356,6 @@ class Fc:
     if self.__len == None:
       self.__len = len(list(self.__mylist))
     return self.__len
-
-  def count(self):
-    return self.len()
 
   def size(self):
     return self.len()

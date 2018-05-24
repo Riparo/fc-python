@@ -40,6 +40,20 @@ def test_insert():
     assert 1 == 1
 
 
+def test_count():
+  assert Fc([
+    1, 2, 3, 4,
+    1, 2, 3, 4,
+    1, 2, 3, 4,
+    1, 2, 3, 4,
+  ]).count().sort(lambda x: x[0]).done() == [
+           (1, 4),
+           (2, 4),
+           (3, 4),
+           (4, 4),
+         ]
+
+
 def test_insertList():
   assert Fc([2, 3, 4]).insertList(0, [0, 1]).done() == [0, 1, 2, 3, 4]
   assert Fc([2, 3, 4]).insertList(10, [0, 1, 2, 3]).done() == [2, 3, 4]

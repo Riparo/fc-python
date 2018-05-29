@@ -1,13 +1,25 @@
 from fc import Fc
 from fc import FcTypeError
 from fc import FcRangeError
+from fc.fc import testList
 
 '''
 Use `Pytest` as a test framework
 '''
 
-def test_map():
+
+def test_funcParam():
+  for func in testList:
+    try:
+      getattr(Fc, func)(1)
+      assert "FcTypeError not thrown" == "False"
+    except FcTypeError as e:
+      assert 1 == 1
+
+
+def test_map_select():
   assert Fc([1, 2, 3, 4, 5, 6, 7]).map(lambda x: x + 1).done() == [2, 3, 4, 5, 6, 7, 8]
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).select(lambda x: x + 1).done() == [2, 3, 4, 5, 6, 7, 8]
 
 
 def test_mapIndexed():
@@ -27,8 +39,9 @@ def test_product():
   ]
 
 
-def test_filter():
+def test_filter_where():
   assert Fc([1, 2, 3, 4, 5, 6, 7]).filter(lambda x: x > 3).filter(lambda x: x < 6).done() == [4, 5]
+  assert Fc([1, 2, 3, 4, 5, 6, 7]).where(lambda x: x > 3).filter(lambda x: x < 6).done() == [4, 5]
 
 
 def test_set():

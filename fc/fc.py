@@ -47,6 +47,9 @@ class Fc:
   def map(self, func, opt=True):
     return type(self)(map(func, self.__mylist), opt=opt)
 
+  def select(self, func, opt=True):
+    return self.map(func, opt)
+
   def mapIndexed(self, func, opt=True):
     def tmp(func):
       i = 0
@@ -58,6 +61,9 @@ class Fc:
 
   def filter(self, func, opt=True):
     return type(self)(filter(func, self.__mylist), opt=opt)
+
+  def where(self, func, opt=True):
+    return self.filter(func, opt)
 
   def set(self):
     return type(self)(set(self.__mylist))
@@ -487,7 +493,6 @@ for name in Fc.__dict__:
 Fc_ = type("Fc_", (object,), newDict)
 
 del newDict
-del testList
 
 if __name__ == "__main__":
   pass

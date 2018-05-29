@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='fc',
-    version='0.1.9',
+    version='0.1.10',
     description='Enables Python to be functionally chain-styled.',
     long_description=open(os.path.join(os.path.dirname(__file__),
                                        'README.md')).read(),

@@ -42,6 +42,12 @@ def test_makeMultiLineLambda():
       '''
   )(1, a=2) == ((1,), {'a': 2})
 
+  assert Fc([1, 2, 3, 4, 5]).map(m('''
+  lambda x:
+    if x<=0: return 0
+    else:    return x+{self}(x-1)
+    ''')).done() == [1, 3, 6, 10, 15]
+
 
 def test_map_select():
   assert Fc([1, 2, 3, 4, 5, 6, 7]).map(lambda x: x + 1).done() == [2, 3, 4, 5, 6, 7, 8]

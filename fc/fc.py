@@ -51,7 +51,8 @@ def makeMultiLineLambda(lambdaBodyString):
     body = sub(headRe, '', lambdaBodyString)
     body = sub("^\s{" + str(spaceN) + "}", "", body)
 
-    exec(head + body)
+    exec(head + body.format(self=funcName))
+    globals()[funcName] = eval(funcName)
     return eval(funcName)
 
   except Exception as e:

@@ -72,6 +72,14 @@ assert m(
         return (l,k)
     '''
 )(1, a=2) == ((1,), {'a': 2})
+
+# even supports recursive anonymous functions(but must use {self})
+assert Fc([1, 2, 3, 4, 5]).map(m('''
+lambda x:
+  if x<=0: return 0
+  else:    return x+{self}(x-1)
+  ''')).done() == [1, 3, 6, 10, 15]
+
 ```
 
 ## More

@@ -41,34 +41,37 @@ assert l == [1, 2, 3]
 
 ## Multi-line Lambda
 
-if you not like single line lambda for python,you can choose `mml`(`Make Multi-line Lambda`) of `fc` like this:
+if you not like single line lambda for python,you can import `mml`(`Make Multi-line Lambda`) of `fc` like this:
 
 ```Python
-  # normal
-  assert Fc([1, 2, 3]).map(mml(
-    '''
-      lambda x:
-        x*=2
-        return x
-    '''
-  )).done() == [2, 4, 6]
+from fc import Fc
+from fc import mml
 
-  # default value
-  assert Fc([1, 2, 3]).map(mml(
-    '''
-      lambda x,y=1:
-        x+=y
-        return x
-    '''
-  )).done() == [2, 3, 4]
+# normal
+assert Fc([1, 2, 3]).map(mml(
+  '''
+    lambda x:
+      x*=2
+      return x
+  '''
+)).done() == [2, 4, 6]
 
-  # support list,dict
-  assert mml(
+# default value
+assert Fc([1, 2, 3]).map(mml(
+  '''
+    lambda x,y=1:
+      x+=y
+      return x
+  '''
+)).done() == [2, 3, 4]
+
+# support list,dict
+assert mml(
+  '''
+      lambda *l,**k:
+        return (l,k)
     '''
-        lambda *l,**k:
-          return (l,k)
-      '''
-  )(1, a=2) == ((1,), {'a': 2})
+)(1, a=2) == ((1,), {'a': 2})
 ```
 
 ## More

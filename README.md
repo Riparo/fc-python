@@ -45,10 +45,10 @@ if you not like single line lambda for python,you can import `mml`(`Make Multi-l
 
 ```Python
 from fc import Fc
-from fc import mml
+from fc import mml as m
 
 # normal
-assert Fc([1, 2, 3]).map(mml(
+assert Fc([1, 2, 3]).map(m(
   '''
     lambda x:
       x*=2
@@ -57,7 +57,7 @@ assert Fc([1, 2, 3]).map(mml(
 )).done() == [2, 4, 6]
 
 # default value
-assert Fc([1, 2, 3]).map(mml(
+assert Fc([1, 2, 3]).map(m(
   '''
     lambda x,y=1:
       x+=y
@@ -66,7 +66,7 @@ assert Fc([1, 2, 3]).map(mml(
 )).done() == [2, 3, 4]
 
 # support list,dict
-assert mml(
+assert m(
   '''
       lambda *l,**k:
         return (l,k)

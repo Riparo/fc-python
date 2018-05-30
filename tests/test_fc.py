@@ -1,5 +1,5 @@
 from fc import Fc
-from fc import mml
+from fc import mml as m
 from fc import FcTypeError
 from fc import FcRangeError
 from fc.fc import testList
@@ -19,7 +19,7 @@ def test_funcParam():
 
 
 def test_makeMultiLineLambda():
-  assert Fc([1, 2, 3]).map(mml(
+  assert Fc([1, 2, 3]).map(m(
     '''
       lambda x:
         x*=2
@@ -27,7 +27,7 @@ def test_makeMultiLineLambda():
     '''
   )).done() == [2, 4, 6]
 
-  assert Fc([1, 2, 3]).map(mml(
+  assert Fc([1, 2, 3]).map(m(
     '''
       lambda x,y=1:
         x+=y
@@ -35,7 +35,7 @@ def test_makeMultiLineLambda():
     '''
   )).done() == [2, 3, 4]
 
-  assert mml(
+  assert m(
     '''
         lambda *l,**k:
           return (l,k)

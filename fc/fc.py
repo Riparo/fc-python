@@ -3,6 +3,8 @@ from collections import Iterable
 from types import FunctionType
 from itertools import product
 from collections import Counter
+from random import choice
+from re import search, findall, sub
 
 
 class FcTypeError(Exception):
@@ -11,6 +13,49 @@ class FcTypeError(Exception):
 
 class FcRangeError(Exception):
   pass
+
+
+class FcFormatError(Exception):
+  pass
+
+
+def makeMultiLineLambda(lambdaBodyString):
+  '''
+  lambda x: # x == 0
+    x=x+1
+    x=x+2
+    return x # x == 3
+  '''
+
+  def getRS(n=32):
+    chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpeQqRrSsTtUuVvWwXxYyZz'
+    number = '0123456789'
+    alls = chars + number
+    sum = ''
+    for i in range(0, n):
+      if i == 0:
+        sum += choice(chars)
+      else:
+        sum += choice(alls)
+    return sum
+
+  headRe = "lambda\s+([\w\d,*_=]+):"
+  try:
+    param = search(headRe, lambdaBodyString)
+    param = param.group()
+    param = findall(headRe, param)[0]
+    funcName = getRS()
+    head = "def " + funcName + "({param}):".format(param=param)
+    spaceN = search(headRe, lambdaBodyString).span()[0] - 1
+
+    body = sub(headRe, '', lambdaBodyString)
+    body = sub("^\s{" + str(spaceN) + "}", "", body)
+
+    exec(head + body)
+    return eval(funcName)
+
+  except Exception as e:
+    raise FcFormatError(lambdaBodyString + " has format error," + str(e))
 
 
 def paramMustBeFunction(testFunction):

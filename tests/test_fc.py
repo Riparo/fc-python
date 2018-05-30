@@ -1,4 +1,5 @@
 from fc import Fc
+from fc import mml
 from fc import FcTypeError
 from fc import FcRangeError
 from fc.fc import testList
@@ -15,6 +16,31 @@ def test_funcParam():
       assert "FcTypeError not thrown" == "False"
     except FcTypeError as e:
       assert 1 == 1
+
+
+def test_makeMultiLineLambda():
+  assert Fc([1, 2, 3]).map(mml(
+    '''
+      lambda x:
+        x*=2
+        return x
+    '''
+  )).done() == [2, 4, 6]
+
+  assert Fc([1, 2, 3]).map(mml(
+    '''
+      lambda x,y=1:
+        x+=y
+        return x
+    '''
+  )).done() == [2, 3, 4]
+
+  assert mml(
+    '''
+        lambda *l,**k:
+          return (l,k)
+      '''
+  )(1, a=2) == ((1,), {'a': 2})
 
 
 def test_map_select():

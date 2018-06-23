@@ -4,6 +4,11 @@
 
 Enables Python to be functionally chain-styled.
 
+## Brother Project
+
+- [Python Version](https://github.com/Riparo/fc-python)
+- [C++ Version](https://github.com/GrayFlow-Institute/fc-cpp)
+
 ## Document
 
 - **Simplified Chinese documents** **[here](./docs/zh-CN/main/README.md)**.
